@@ -2,8 +2,11 @@ package com.luck.pictureselector
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.widget.ImageView
-import androidx.core.graphics.drawable.toBitmap
+import androidx.annotation.Px
 import coil.imageLoader
 import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
@@ -49,6 +52,33 @@ class CoilEngine : ImageEngine {
         val request = builder.build();
         context.imageLoader.enqueue(request)
     }
+
+    fun Drawable.toBitmap(
+        @Px width: Int = intrinsicWidth,
+        @Px height: Int = intrinsicHeight,
+        config: Bitmap.Config? = null
+    ): Bitmap {
+        if (this is BitmapDrawable) {
+            if (config == null || bitmap.config == config) {
+                // Fast-path to return original. Bitmap.createScaledBitmap will do this check, but it
+                // involves allocation and two jumps into native code so we perform the check ourselves.
+                if (width == intrinsicWidth && height == intrinsicHeight) {
+                    return bitmap
+                }
+                return Bitmap.createScaledBitmap(bitmap, width, height, true)
+            }
+        }
+        val oldLeft = bounds.left
+        val oldTop = bounds.top
+        val oldRight = bounds.right
+        val oldBottom = bounds.bottom
+        val bitmap = Bitmap.createBitmap(width, height, config ?: Bitmap.Config.ARGB_8888)
+        setBounds(0, 0, width, height)
+        draw(Canvas(bitmap))
+        setBounds(oldLeft, oldTop, oldRight, oldBottom)
+        return bitmap
+    }
+
 
     override fun loadAlbumCover(context: Context, url: String, imageView: ImageView) {
         if (!ActivityCompatHelper.assertValidRequest(context)) {

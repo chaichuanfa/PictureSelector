@@ -27,10 +27,31 @@ android {
     }
 }
 
-ext {
-    PUBLISH_ARTIFACT_ID = "compress"
-}
+group 'com.minijoy.android'
+version cfgs.versionName
+def artifactId = 'compress'
 
-apply from: '../publish.gradle'
+apply plugin: 'maven'
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: 'https://packages.aliyun.com/maven/repository/2104618-release-JLrDNE/') {
+                authentication(
+                        userName: ALIYUN_MAVEN_USERNAME,
+                        password: ALIYUN_MAVEN_PASSWORD
+                )
+            }
+            snapshotRepository(url: 'https://packages.aliyun.com/maven/repository/2104618-snapshot-FeRcp7/') {
+                authentication(
+                        userName: ALIYUN_MAVEN_USERNAME,
+                        password: ALIYUN_MAVEN_PASSWORD
+                )
+            }
+            pom.version = "${project.version}"
+            pom.artifactId = "$artifactId"
+            pom.groupId = "$project.group"
+        }
+    }
+}
 
 dependencies {}

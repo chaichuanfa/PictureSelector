@@ -274,7 +274,7 @@ public class Luban implements Handler.Callback {
             return this;
         }
 
-        private Builder load(final File file, int index) {
+        private Builder load(final File file, final int index) {
             mStreamProviders.add(new InputStreamAdapter() {
                 @Override
                 public InputStream openInternal() {
@@ -300,7 +300,7 @@ public class Luban implements Handler.Callback {
             return this;
         }
 
-        private Builder load(final String string, int index) {
+        private Builder load(final String string, final int index) {
             mStreamProviders.add(new InputStreamAdapter() {
                 @Override
                 public InputStream openInternal() {
@@ -325,7 +325,7 @@ public class Luban implements Handler.Callback {
             return this;
         }
 
-        private Builder load(final Uri uri, int index) {
+        private Builder load(final Uri uri, final int index) {
             mStreamProviders.add(new InputStreamAdapter() {
                 @Override
                 public InputStream openInternal() throws IOException {
@@ -423,7 +423,7 @@ public class Luban implements Handler.Callback {
             return get(path, 0);
         }
 
-        public File get(final String path,int index) throws IOException {
+        public File get(final String path, final int index) throws IOException {
             return build().get(new InputStreamAdapter() {
                 @Override
                 public InputStream openInternal() {

@@ -26,11 +26,34 @@ android {
     }
 }
 
-ext {
-    PUBLISH_ARTIFACT_ID = "camerax"
+
+group 'com.minijoy.android'
+version cfgs.versionName
+def artifactId = 'camerax'
+
+apply plugin: 'maven'
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: 'https://packages.aliyun.com/maven/repository/2104618-release-JLrDNE/') {
+                authentication(
+                        userName: ALIYUN_MAVEN_USERNAME,
+                        password: ALIYUN_MAVEN_PASSWORD
+                )
+            }
+            snapshotRepository(url: 'https://packages.aliyun.com/maven/repository/2104618-snapshot-FeRcp7/') {
+                authentication(
+                        userName: ALIYUN_MAVEN_USERNAME,
+                        password: ALIYUN_MAVEN_PASSWORD
+                )
+            }
+            pom.version = "${project.version}"
+            pom.artifactId = "$artifactId"
+            pom.groupId = "$project.group"
+        }
+    }
 }
 
-apply from: '../publish.gradle'
 
 dependencies {
     api "androidx.camera:camera-core:1.1.0-beta01"
@@ -39,5 +62,5 @@ dependencies {
     implementation "androidx.camera:camera-lifecycle:1.1.0-beta01"
     implementation "androidx.transition:transition:1.4.1"
     implementation "androidx.concurrent:concurrent-futures:1.1.0"
-    implementation 'androidx.appcompat:appcompat:1.4.1'
+    implementation "androidx.appcompat:appcompat:${cfgs.version_appcompat}"
 }
