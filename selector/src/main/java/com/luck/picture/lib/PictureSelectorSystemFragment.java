@@ -1,17 +1,5 @@
 package com.luck.picture.lib;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.View;
-
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import com.luck.picture.lib.basic.PictureCommonFragment;
 import com.luck.picture.lib.config.PictureSelectionConfig;
 import com.luck.picture.lib.config.SelectMimeType;
@@ -25,7 +13,19 @@ import com.luck.picture.lib.permissions.PermissionResultCallback;
 import com.luck.picture.lib.utils.SdkVersionUtils;
 import com.luck.picture.lib.utils.ToastUtils;
 
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.View;
+
 import java.util.List;
+
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * @author：luck
@@ -243,6 +243,8 @@ public class PictureSelectorSystemFragment extends PictureCommonFragment {
             return SelectMimeType.SYSTEM_VIDEO;
         } else if (config.chooseMode == SelectMimeType.ofAudio()) {
             return SelectMimeType.SYSTEM_AUDIO;
+        } else if (config.chooseMode == SelectMimeType.ofFile()) {
+            return SelectMimeType.SYSTEM_FILE;
         } else {
             return SelectMimeType.SYSTEM_IMAGE;
         }

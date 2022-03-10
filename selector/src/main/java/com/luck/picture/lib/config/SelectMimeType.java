@@ -31,6 +31,10 @@ public class SelectMimeType {
         return TYPE_VIDEO;
     }
 
+    public static int ofFile() {
+        return TYPE_FILE;
+    }
+
     /**
      * GET audio only
      * <p>
@@ -48,6 +52,7 @@ public class SelectMimeType {
     public final static int TYPE_IMAGE = 1;
     public final static int TYPE_VIDEO = 2;
     public final static int TYPE_AUDIO = 3;
+    public final static int TYPE_FILE = 4;
 
     /**
      * System all image or video album
@@ -66,4 +71,9 @@ public class SelectMimeType {
      * System audio album
      */
     public final static String SYSTEM_AUDIO = "audio/*";
+
+    /**
+     * all file, only use for SystemGallery
+     */
+    public final static String SYSTEM_FILE = "*/*";
 }
