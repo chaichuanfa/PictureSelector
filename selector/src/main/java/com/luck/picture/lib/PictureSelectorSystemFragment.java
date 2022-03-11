@@ -10,6 +10,7 @@ import com.luck.picture.lib.manager.SelectedManager;
 import com.luck.picture.lib.permissions.PermissionChecker;
 import com.luck.picture.lib.permissions.PermissionConfig;
 import com.luck.picture.lib.permissions.PermissionResultCallback;
+import com.luck.picture.lib.utils.FileUtils;
 import com.luck.picture.lib.utils.SdkVersionUtils;
 import com.luck.picture.lib.utils.ToastUtils;
 
@@ -19,6 +20,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.activity.result.ActivityResultCallback;
@@ -219,18 +222,38 @@ public class PictureSelectorSystemFragment extends PictureCommonFragment {
                                 if (result == null) {
                                     onKeyBackFragmentFinish();
                                 } else {
-                                    LocalMedia media = buildLocalMedia(result.toString());
-                                    media.setPath(SdkVersionUtils.isQ() ? media.getPath() : media.getRealPath());
-                                    int selectResultCode = confirmSelect(media, false);
-                                    if (selectResultCode == SelectedManager.ADD_SUCCESS) {
-                                        dispatchTransformResult();
+                                    if (config.chooseMode == SelectMimeType.ofFile()) {
+                                        handleFileSelect(result);
                                     } else {
-                                        onKeyBackFragmentFinish();
+                                        LocalMedia media = buildLocalMedia(result.toString());
+                                        media.setPath(SdkVersionUtils.isQ() ? media.getPath() : media.getRealPath());
+                                        int selectResultCode = confirmSelect(media, false);
+                                        if (selectResultCode == SelectedManager.ADD_SUCCESS) {
+                                            dispatchTransformResult();
+                                        } else {
+                                            onKeyBackFragmentFinish();
+                                        }
                                     }
                                 }
                             }
 
                         });
+    }
+
+    private void handleFileSelect(Uri uri) {
+        String path = FileUtils.getPath(requireContext(), uri);
+        long fileLength = new File(path).length();
+        if (fileLength / 1024 > config.selectMaxFileSize) {
+            ToastUtils.showToast(requireContext(), getString(R.string.ps_select_max_size, String.valueOf(fileLength)));
+            onKeyBackFragmentFinish();
+            return;
+        }
+        ArrayList<LocalMedia> result = new ArrayList<>();
+        LocalMedia media = new LocalMedia();
+        media.setRealPath(path);
+        media.setSize(fileLength);
+        result.add(media);
+        onResultEvent(result);
     }
 
     /**

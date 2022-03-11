@@ -46,6 +46,9 @@ public class ValueOf {
             String s = o.toString().trim();
             if (s.contains(".")) {
                 value = Long.parseLong(s.substring(0, s.lastIndexOf(".")));
+            } else if (s.contains(":")) {
+                String sub = s.substring(s.indexOf(":") + 1);
+                value = Long.parseLong(sub);
             } else {
                 value = Long.parseLong(s);
             }

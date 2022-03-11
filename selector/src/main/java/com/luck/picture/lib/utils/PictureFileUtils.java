@@ -1,5 +1,9 @@
 package com.luck.picture.lib.utils;
 
+import com.luck.picture.lib.config.PictureMimeType;
+import com.luck.picture.lib.config.SelectMimeType;
+import com.luck.picture.lib.manager.PictureCacheManager;
+
 import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Context;
@@ -12,14 +16,6 @@ import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
-
-import com.luck.picture.lib.config.PictureMimeType;
-import com.luck.picture.lib.config.SelectMimeType;
-import com.luck.picture.lib.manager.PictureCacheManager;
-
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.Closeable;
@@ -31,6 +27,10 @@ import java.io.OutputStream;
 import java.nio.channels.FileChannel;
 import java.util.Locale;
 import java.util.Objects;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 
 /**
  * @author：luck
